@@ -1,20 +1,34 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { createStackNavigator } from "react-navigation-stack";
+import { createAppContainer, createSwitchNavigator } from "react-navigation";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+import CameraScreen from "./src/views/CamScreen";
+import LoginScreen from "./src/views/LoginScreen";
+import LoadingScreen from "./src/views/LoadingScreen";
+import RegisterScreen from "./src/views/RegisterScreen";
+import HomeScreen from "./src/views/HomeScreen";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+const AppStack = createStackNavigator({
+  Home: HomeScreen, // Pantalla principal del stack es el feed de posts
+  Camera: CameraScreen, // Añadimos CameraScreen como parte del stack
 });
+
+const AuthStack = createStackNavigator({
+  Login: LoginScreen,
+  Register: RegisterScreen,
+});
+
+export default createAppContainer(
+  createSwitchNavigator(
+    {
+      Loading: LoadingScreen,
+      App: AppStack,
+      Auth: AuthStack,
+    },
+    {
+      initialRouteName: 'Loading', // Establece la pantalla de carga como la inicial
+    }
+  )
+);
+
+
